@@ -30,4 +30,8 @@ class EmployeeStorage @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
   def list(): Future[Seq[Employee]] = db.run {
     employees.result
   }
+
+  def byId(id: Long): Future[Option[Employee]] = db.run {
+    employees.filter( employee => employee.id === id).result.headOption
+  }
 }

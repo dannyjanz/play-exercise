@@ -6,7 +6,6 @@ import models.persistence.EmployeeStorage
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import models.json.EmployeeJson._
-
 import scala.concurrent.ExecutionContext
 
 
@@ -22,6 +21,19 @@ class EmployeeController @Inject()(cc: ControllerComponents, employeeStorage: Em
         case _ => Ok(views.html.employees(employees))
       }
     }
+  }
+
+  def single(id: Long) = Action.async { implicit request =>
+
+    employeeStorage.byId(id).map {
+      case Some(employee) => render {
+        case Accepts.Json => Ok(Json.toJson(employee))
+        case _ => Ok(views.html.employees(Seq(employee)))
+      }
+
+      case None => NotFound(s"No Employee with Id $id")
+    }
+
   }
 
 }
