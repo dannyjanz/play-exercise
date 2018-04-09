@@ -1,0 +1,5 @@
+- Clone Repository 
+- change into project directory
+- start sbt
+- in sbt console execute `run`
+- once server is started visit `http://localhost:9000/employees` to see result
