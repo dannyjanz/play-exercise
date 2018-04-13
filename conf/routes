@@ -6,6 +6,10 @@ GET     /                           controllers.HomeController.index
 
 GET     /employees                  controllers.EmployeeController.list
 GET     /employees/$id<[0-9]+>      controllers.EmployeeController.single(id : Long)
++nocsrf
+POST    /employees                  controllers.EmployeeController.add
+
+GET     /add-employee               controllers.EmployeeController.addForm
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

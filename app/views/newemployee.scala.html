@@ -1,0 +1,48 @@
+@()
+
+@main("Add new Employee") {
+
+<form id="form" action="" method="post">
+    First Name: <input type="text" name="firstName"><br>
+    Last Name: <input type="text" name="lastName"><br>
+    Job Title: <input type="text" name="jobTitle"><br>
+    <input id="submit" type="button" name="submit" value="submit">
+</form>
+
+<script>
+
+    $(document).ready(function(){
+        $("#submit").on('click', function(){
+
+            var objects = $("#form").serializeArray().map( field => {
+              return { [field.name] : field.value }
+            })
+
+
+            var merged = {}
+            for(let field of objects) {
+              Object.assign(merged, field)
+            }
+
+            $.ajax({
+                url: '/employees',
+                type : "POST",
+                dataType: "json",
+                contentType : "application/json",
+                data : JSON.stringify(merged),
+                success : function(result) {
+                    console.log(result);
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+        });
+    });
+
+
+
+</script>
+
+
+}

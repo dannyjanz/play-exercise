@@ -2,10 +2,12 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
+import models.Employee
 import models.persistence.EmployeeStorage
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import models.json.EmployeeJson._
+
 import scala.concurrent.ExecutionContext
 
 
@@ -32,6 +34,18 @@ class EmployeeController @Inject()(cc: ControllerComponents, employeeStorage: Em
       }
 
       case None => NotFound(s"No Employee with Id $id")
+    }
+
+  }
+
+  def addForm = Action {
+    Ok(views.html.newemployee())
+  }
+
+  def add = Action(parse.json[Employee]).async { implicit request =>
+
+    employeeStorage.store(request.body).map { storedEmployee =>
+      Ok(Json.toJson(storedEmployee))
     }
 
   }
